@@ -38,7 +38,7 @@ def get_chrome_cookies():
 
     # 等待页面加载（如果你的Chrome已登录，应该会自动登录）
     print("等待页面加载...")
-    time.sleep(5)
+    time.sleep(50)
 
     # 检查是否已登录（通过检测登录元素或URL变化）
     print(f"当前URL: {driver.current_url}")
