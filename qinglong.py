@@ -18,7 +18,7 @@ def update_env(WEIBO_COOKIE=""):
     url=f"{baseURL}/auth/token"
     print(url)
     response = requests.get(url, params={"client_id": clientID, "client_secret": clientSecret})
-    print(response.text)
+    #print(response.text)
 
     token = response.json()["data"]["token"]
 
@@ -28,18 +28,27 @@ def update_env(WEIBO_COOKIE=""):
     url = f"{baseURL}/envs?t={(int(datetime.datetime.now().timestamp() * 1000))}"
     data = {"id": "1","name": "WEIBO_COOKIE", "value": WEIBO_COOKIE, "remarks": datetime.datetime.now().ctime()}
     response = requests.put(url, headers=headers, json=data)
+    print(f"正在更新 {clientID} 的环境变量 WEIBO_COOKIE...")
     print(response.json())
 
     url = f"{baseURL}/crons?t={(int(datetime.datetime.now().timestamp() * 1000))}"
     data = {"id": "1","name": "WEIBO_COOKIE", "value": WEIBO_COOKIE, "remarks": datetime.datetime.now().ctime()}
     response = requests.get(url, headers=headers)
+    print(f"正在获取 {clientID} 的 cron 信息...")
     print(response.json())
+    cron_data = response.json()["data"]["data"]
+    print(f"当前 {clientID} 的 cron 数量为 {len(cron_data)}")
+    cronTask=['qlpublic','weibo 超话签到']
+    for cron in cron_data:
+        if cron["name"] in cronTask:
+            url = f"{baseURL}/crons/run?t={(int(datetime.datetime.now().timestamp() * 1000))}"
+            print(f"正在run {clientID} 的 cron {cron['name']}  id {cron['id']}...")
+            response = requests.put(url, headers=headers,json=[cron["id"]])
+            print(response.status_code)
+            print(response.text)
+            
 
-    print(f"正在run {clientID} 的 cron...")
-    url = f"{baseURL}/crons/run?t={(int(datetime.datetime.now().timestamp() * 1000))}"
-    data = [1,2]
-    response = requests.put(url, headers=headers,json=data)
-    print(response.json())
+    
 
 
 
