@@ -41,12 +41,16 @@ def update_env(WEIBO_COOKIE=""):
     cronTask=['qlpublic','weibo 超话签到']
     for cron in cron_data:
         if cron["name"] in cronTask:
+            url = f"{baseURL}/crons/stop?t={(int(datetime.datetime.now().timestamp() * 1000))}"
+            response = requests.put(url, headers=headers,json=[cron["id"]])
+            import time
+            time.sleep(1)
             url = f"{baseURL}/crons/run?t={(int(datetime.datetime.now().timestamp() * 1000))}"
             print(f"正在run {clientID} 的 cron {cron['name']}  id {cron['id']}...")
             response = requests.put(url, headers=headers,json=[cron["id"]])
             print(response.status_code)
             print(response.text)
-            
+            time.sleep(1)
 
     
 

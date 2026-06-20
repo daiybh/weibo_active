@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """使用系统原有Chrome数据，无需重新登录"""
 import time, sys, os
 
